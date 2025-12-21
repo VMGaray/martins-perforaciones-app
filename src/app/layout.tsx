@@ -6,7 +6,7 @@ import "./globals.css";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "HidroPerforaciones | Soluciones Hídricas",
+  title: "Martins Perforaciones | Soluciones Hídricas",
   description: "Expertos en perforación de agua y sistemas de bombeo.",
 };
 
