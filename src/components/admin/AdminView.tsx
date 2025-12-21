@@ -10,7 +10,6 @@ import { StatCard } from "./StatCard";
 import { UserManagement } from "./UserManagement";
 import { BudgetsTable } from "./BudgetsTable";
 
-// 1. Interfaces estrictas para eliminar el error de "any"
 interface Presupuesto {
   id: string;
   created_at: string;
@@ -28,19 +27,26 @@ interface Usuario {
   role: string;
 }
 
+// Interfaz para el formulario de nuevo usuario
+interface NewUser {
+  nombre: string;
+  email: string;
+  password?: string;
+}
+
 export default function AdminView() {
   const router = useRouter();
   
-  // Estados con tipos definidos
   const [presupuestos, setPresupuestos] = useState<Presupuesto[]>([]);
   const [usuarios, setUsuarios] = useState<Usuario[]>([]);
   const [loading, setLoading] = useState(true);
-  const [newUser, setNewUser] = useState({ nombre: "", email: "", password: "" });
+  
+  // CORRECCIÓN: Usamos la interfaz NewUser aquí también
+  const [newUser, setNewUser] = useState<NewUser>({ nombre: "", email: "", password: "" });
   const [creatingUser, setCreatingUser] = useState(false);
 
-  // 2. Definimos la función fetchData ARRIBA del useEffect
+  // Definimos fetchData con useCallback para evitar "cascading renders"
   const fetchData = useCallback(async () => {
-    // No seteamos loading(true) aquí para evitar renders infinitos si se llama mal
     const { data: presu } = await supabase
       .from('presupuestos')
       .select('*')
@@ -56,16 +62,14 @@ export default function AdminView() {
     setLoading(false);
   }, []);
 
-  // 3. Efecto único de montaje. Controlamos el rol y cargamos datos.
   useEffect(() => {
     const userRole = localStorage.getItem("userRole");
-    
     if (userRole !== "admin") {
       router.push("/");
-    } else {
-      fetchData();
+      return;
     }
-  }, [router, fetchData]);
+    fetchData();
+  }, [router, fetchData]); // Dependencias estables
 
   const handleLogout = () => {
     localStorage.clear();
@@ -83,15 +87,15 @@ export default function AdminView() {
       
     if (!error) {
       setNewUser({ nombre: "", email: "", password: "" });
-      await fetchData(); // Recargamos la lista
+      fetchData();
     }
     setCreatingUser(false);
   }
 
   async function deleteUser(id: string) {
-    if (confirm("¿Eliminar acceso?")) {
+    if (confirm("¿Estás seguro de eliminar este acceso?")) {
       const { error } = await supabase.from('usuarios').delete().eq('id', id);
-      if (!error) await fetchData();
+      if (!error) fetchData();
     }
   }
 
@@ -105,7 +109,10 @@ export default function AdminView() {
           <p className="text-[10px] text-blue-400 font-bold uppercase tracking-widest">Administración Central</p>
         </div>
         <div className="flex items-center gap-4">
-          <Link href="/ventas" className="bg-blue-600 text-white px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-2 shadow-lg">
+          <Link 
+            href="/ventas" 
+            className="bg-blue-600 text-white px-4 py-2 rounded-xl text-xs font-bold hover:bg-blue-500 transition-all flex items-center gap-2"
+          >
             <Plus size={16}/> Nuevo Presupuesto
           </Link>
           <button onClick={handleLogout} className="p-2 text-slate-500 hover:text-red-400 transition-colors">
@@ -121,11 +128,7 @@ export default function AdminView() {
           <StatCard icon={<Users />} label="Equipo" value={usuarios.length} color="cyan" />
         </div>
 
-        <BudgetsTable 
-          presupuestos={presupuestos} 
-          loading={loading} 
-          onEdit={(id: string) => router.push(`/ventas?id=${id}`)} 
-        />
+        <BudgetsTable presupuestos={presupuestos} loading={loading} onEdit={(id: string) => router.push(`/ventas?id=${id}`)} />
 
         <UserManagement 
           usuarios={usuarios} 

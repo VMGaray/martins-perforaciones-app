@@ -1,6 +1,12 @@
 import { Users, Plus, User, Trash2, Loader2 } from "lucide-react";
 
-// 1. Definimos la interfaz para un Usuario existente
+// Definimos la estructura exacta que tiene el estado en el padre
+interface NewUser {
+  nombre: string;
+  email: string;
+  password?: string;
+}
+
 interface Usuario {
   id: string;
   nombre: string;
@@ -8,18 +14,11 @@ interface Usuario {
   role: string;
 }
 
-// 2. Definimos la interfaz para el estado del nuevo usuario (formulario)
-interface NewUser {
-  nombre: string;
-  email: string;
-  password?: string;
-}
-
-// 3. Definimos la interfaz de las Props que recibe el componente
+// CORRECCIÓN: Usamos el tipo Dispatch para que coincida perfectamente con el useState
 interface UserManagementProps {
   usuarios: Usuario[];
   newUser: NewUser;
-  setNewUser: (user: NewUser) => void;
+  setNewUser: React.Dispatch<React.SetStateAction<NewUser>>; 
   handleCreateUser: (e: React.FormEvent) => Promise<void>;
   deleteUser: (id: string) => void;
   creatingUser: boolean;
@@ -35,7 +34,6 @@ export function UserManagement({
 }: UserManagementProps) {
   return (
     <section className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-      {/* Formulario Alta */}
       <div className="bg-slate-900 border border-slate-800 p-6 rounded-3xl shadow-xl h-fit">
         <h3 className="text-white font-bold mb-4 flex items-center gap-2 text-sm">
           <Plus size={18} className="text-blue-500" /> Nuevo Ejecutivo
@@ -45,20 +43,20 @@ export function UserManagement({
             placeholder="Nombre completo" 
             className="w-full bg-slate-950 border border-slate-800 p-3 rounded-xl text-sm focus:border-blue-500 outline-none text-white" 
             value={newUser.nombre}
-            onChange={e => setNewUser({...newUser, nombre: e.target.value})}
+            onChange={e => setNewUser(prev => ({...prev, nombre: e.target.value}))}
           />
           <input 
             placeholder="Email de acceso" 
             className="w-full bg-slate-950 border border-slate-800 p-3 rounded-xl text-sm focus:border-blue-500 outline-none text-white" 
             value={newUser.email}
-            onChange={e => setNewUser({...newUser, email: e.target.value})}
+            onChange={e => setNewUser(prev => ({...prev, email: e.target.value}))}
           />
           <input 
             type="password"
             placeholder="Contraseña" 
             className="w-full bg-slate-950 border border-slate-800 p-3 rounded-xl text-sm focus:border-blue-500 outline-none text-white" 
             value={newUser.password || ''}
-            onChange={e => setNewUser({...newUser, password: e.target.value})}
+            onChange={e => setNewUser(prev => ({...prev, password: e.target.value}))}
           />
           <button 
             disabled={creatingUser}
@@ -69,7 +67,6 @@ export function UserManagement({
         </form>
       </div>
 
-      {/* Lista de Usuarios */}
       <div className="lg:col-span-2 bg-slate-900 border border-slate-800 p-6 rounded-3xl shadow-xl">
         <h3 className="text-white font-bold mb-6 text-sm flex items-center gap-2">
           <Users size={18} className="text-cyan-400" /> Ejecutivos de Venta
@@ -86,10 +83,7 @@ export function UserManagement({
                   <p className="text-slate-500 text-[10px] mt-1">{u.email}</p>
                 </div>
               </div>
-              <button 
-                onClick={() => deleteUser(u.id)} 
-                className="p-2 text-slate-700 hover:text-red-500 transition-colors"
-              >
+              <button onClick={() => deleteUser(u.id)} className="p-2 text-slate-700 hover:text-red-500 transition-colors">
                 <Trash2 size={16} />
               </button>
             </div>
