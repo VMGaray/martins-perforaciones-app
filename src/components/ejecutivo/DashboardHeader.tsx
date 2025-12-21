@@ -20,7 +20,7 @@ export default function DashboardHeader({ userName, role, onLogout }: DashboardH
           </p>
           <span className="text-slate-700 text-xs">|</span>
           <span className="text-[10px] text-slate-500 uppercase font-medium">
-            {role === 'admin' ? 'Acceso Total' : 'Ejecutivo MMartins'}
+            {role === 'admin' ? 'Acceso Total' : 'Ejecutivo Martins'}
           </span>
         </div>
       </div>

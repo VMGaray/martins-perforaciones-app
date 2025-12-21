@@ -19,7 +19,7 @@ export const generateBudgetPDF = (client: any, items: any[], work: any) => {
   doc.setFont("helvetica", "bold");
   doc.setFontSize(20);
   doc.setTextColor(41, 128, 185);
-  doc.text("MMartins Perforaciones", margin, 20);
+  doc.text("Martins Perforaciones", margin, 20);
   
   doc.setFontSize(9);
   doc.setTextColor(100);

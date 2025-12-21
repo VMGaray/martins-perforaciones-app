@@ -117,12 +117,30 @@ export default function VentasView() {
 
   const handleFinalize = async () => {
     if (await saveToSupabase('Enviado WhatsApp')) {
+      // 1. Generamos el PDF
       generateBudgetPDF(clientData, items, workData);
+
+      // 2. Limpiamos el teléfono
       const phone = clientData.phone.replace(/[^0-9]/g, '');
       const waPhone = phone.startsWith('54') ? phone : `549${phone}`;
-      const message = `Hola ${clientData.name}, adjunto presupuesto de MMartins Perforaciones por un total de $${grandTotal.toLocaleString("es-AR")}.`;
+
+      // 3. Armamos el mensaje detallado
+      // Usamos \n para los saltos de línea y asteriscos para las negritas en WhatsApp
+      const message = `Hola ${clientData.name}, adjunto el presupuesto solicitado para la obra en ${workData.location}.
+
+*Total Estimado: $${grandTotal.toLocaleString("es-AR")}*
+
+Incluye perforación y materiales según detalle adjunto en el PDF.
+Saludos, Martins Perforaciones.`;
+
+      // 4. Abrimos WhatsApp con el mensaje codificado
       window.open(`https://wa.me/${waPhone}?text=${encodeURIComponent(message)}`, '_blank');
-      setModal({ show: true, type: 'success', message: "Presupuesto enviado con éxito." });
+
+      setModal({ 
+        show: true, 
+        type: 'success', 
+        message: "Presupuesto enviado con éxito." 
+      });
     }
   };
 
