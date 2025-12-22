@@ -12,7 +12,7 @@ import ClientWorkForm from "./ClientWorkForm";
 import BudgetTable from "./BudgetTable";
 import BudgetFooter from "./BudgetFooter";
 import BudgetModal from "./BudgetModal";
-import LegalNotes from "./LegalNotes"; // El nuevo componente
+import LegalNotes from "./LegalNotes";
 
 // Interfaz para los items
 interface BudgetItem {
@@ -30,56 +30,78 @@ export default function VentasView() {
   const [role, setRole] = useState<string | null>(null);
   const [userName, setUserName] = useState("");
   const [loading, setLoading] = useState(false);
-  
+
   const [clientData, setClientData] = useState({ name: "", phone: "", email: "" });
   const [workData, setWorkData] = useState({ startDate: "", location: "", address: "" });
   const [items, setItems] = useState<BudgetItem[]>(INITIAL_ITEMS);
 
-  const [modal, setModal] = useState({ 
-    show: false, 
-    type: 'success' as 'success' | 'error', 
-    message: "" 
+  const [modal, setModal] = useState({
+    show: false,
+    type: "success" as "success" | "error",
+    message: "",
   });
 
   // Carga inicial estable
   const loadBudget = useCallback(async (id: string) => {
     setLoading(true);
     const { data, error } = await supabase
-      .from('presupuestos')
-      .select('*')
-      .eq('id', id)
+      .from("presupuestos")
+      .select("*")
+      .eq("id", id)
       .single();
-    
+
     if (data && !error) {
-      setClientData({ name: data.cliente_nombre, phone: data.cliente_telefono, email: data.cliente_email });
-      setWorkData({ startDate: data.fecha_inicio, location: data.localidad, address: data.direccion });
+      setClientData({
+        name: data.cliente_nombre,
+        phone: data.cliente_telefono,
+        email: data.cliente_email,
+      });
+      setWorkData({
+        startDate: data.fecha_inicio,
+        location: data.localidad,
+        address: data.direccion,
+      });
       setItems(data.items);
     }
     setLoading(false);
   }, []);
 
   useEffect(() => {
+  if (typeof window !== "undefined") {
     setRole(localStorage.getItem("userRole"));
     setUserName(localStorage.getItem("userName") || "Usuario");
-    if (activeId) loadBudget(activeId);
-  }, [activeId, loadBudget]);
+  }
+  if (activeId) loadBudget(activeId);
+}, [activeId, loadBudget]);
 
-  const handleUpdateItem = (id: number, field: string, value: any) => {
-    setItems(prev => prev.map(item => {
-      if (item.id === id) {
-        const updated = { ...item, [field]: field === 'desc' ? value : Number(value) };
-        updated.total = updated.qty * updated.price;
-        return updated;
-      }
-      return item;
-    }));
+
+  const handleUpdateItem = (id: number, field: string, value: string | number) => {
+    setItems((prev) =>
+      prev.map((item) => {
+        if (item.id === id) {
+          const updated = {
+            ...item,
+            [field]: field === "desc" ? value : Number(value),
+          };
+          updated.total = updated.qty * updated.price;
+          return updated;
+        }
+        return item;
+      })
+    );
   };
 
   const grandTotal = items.reduce((acc, item) => acc + item.total, 0);
 
-  const saveToSupabase = async (status: 'Guardado' | 'Enviado WhatsApp'): Promise<boolean> => {
+  const saveToSupabase = async (
+    status: "Guardado" | "Enviado WhatsApp"
+  ): Promise<boolean> => {
     if (!clientData.name) {
-      setModal({ show: true, type: 'error', message: "¡Oops! Falta el nombre del cliente." });
+      setModal({
+        show: true,
+        type: "error",
+        message: "¡Oops! Falta el nombre del cliente.",
+      });
       return false;
     }
     setLoading(true);
@@ -93,14 +115,18 @@ export default function VentasView() {
       items,
       total: grandTotal,
       estado: status,
-      creado_por: userName
+      creado_por: userName,
     };
 
     try {
       if (activeId) {
-        await supabase.from('presupuestos').update(payload).eq('id', activeId);
+        await supabase.from("presupuestos").update(payload).eq("id", activeId);
       } else {
-        const { data } = await supabase.from('presupuestos').insert([payload]).select().single();
+        const { data } = await supabase
+          .from("presupuestos")
+          .insert([payload])
+          .select()
+          .single();
         if (data) {
           setActiveId(data.id);
           router.replace(`/ventas?id=${data.id}`, { scroll: false });
@@ -110,22 +136,22 @@ export default function VentasView() {
       return true;
     } catch (err: any) {
       setLoading(false);
-      setModal({ show: true, type: 'error', message: "Error: " + err.message });
+      setModal({
+        show: true,
+        type: "error",
+        message: "Error: " + err.message,
+      });
       return false;
     }
   };
 
   const handleFinalize = async () => {
-    if (await saveToSupabase('Enviado WhatsApp')) {
-      // 1. Generamos el PDF
+    if (await saveToSupabase("Enviado WhatsApp")) {
       generateBudgetPDF(clientData, items, workData);
 
-      // 2. Limpiamos el teléfono
-      const phone = clientData.phone.replace(/[^0-9]/g, '');
-      const waPhone = phone.startsWith('54') ? phone : `549${phone}`;
+      const phone = clientData.phone.replace(/[^0-9]/g, "");
+      const waPhone = phone.startsWith("54") ? phone : `549${phone}`;
 
-      // 3. Armamos el mensaje detallado
-      // Usamos \n para los saltos de línea y asteriscos para las negritas en WhatsApp
       const message = `Hola ${clientData.name}, adjunto el presupuesto solicitado para la obra en ${workData.location}.
 
 *Total Estimado: $${grandTotal.toLocaleString("es-AR")}*
@@ -133,47 +159,64 @@ export default function VentasView() {
 Incluye perforación y materiales según detalle adjunto en el PDF.
 Saludos, Martins Perforaciones.`;
 
-      // 4. Abrimos WhatsApp con el mensaje codificado
-      window.open(`https://wa.me/${waPhone}?text=${encodeURIComponent(message)}`, '_blank');
+      window.open(
+        `https://wa.me/${waPhone}?text=${encodeURIComponent(message)}`,
+        "_blank"
+      );
 
-      setModal({ 
-        show: true, 
-        type: 'success', 
-        message: "Presupuesto enviado con éxito." 
+      setModal({
+        show: true,
+        type: "success",
+        message: "Presupuesto enviado con éxito.",
       });
     }
   };
 
+  // 👉 Fallback visual mientras role o userName no están listos
+  if (!role || !userName) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-slate-950 text-slate-200">
+        <div className="animate-pulse space-y-4 text-center">
+          <div className="h-6 bg-slate-700 rounded w-48 mx-auto"></div>
+          <div className="h-6 bg-slate-700 rounded w-64 mx-auto"></div>
+          <p className="text-slate-300">Cargando datos del usuario…</p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-slate-950 text-slate-200 pb-24 font-sans">
       <BudgetHeader userName={userName} role={role} />
-      
+
       <main className="max-w-5xl mx-auto p-4 space-y-6">
-        <ClientWorkForm 
-          clientData={clientData} setClientData={setClientData} 
-          workData={workData} setWorkData={setWorkData} 
+        <ClientWorkForm
+          clientData={clientData}
+          setClientData={setClientData}
+          workData={workData}
+          setWorkData={setWorkData}
         />
 
-        <BudgetTable 
-          items={items} 
-          onUpdateItem={handleUpdateItem} 
-          total={grandTotal} 
+        <BudgetTable
+          items={items}
+          onUpdateItem={handleUpdateItem}
+          total={grandTotal}
         />
 
         <LegalNotes />
       </main>
 
-      <BudgetFooter 
-        loading={loading} 
-        onSave={() => saveToSupabase('Guardado')} 
-        onFinalize={handleFinalize} 
+      <BudgetFooter
+        loading={loading}
+        onSave={() => saveToSupabase("Guardado")}
+        onFinalize={handleFinalize}
       />
 
       {modal.show && (
-        <BudgetModal 
-          type={modal.type} 
-          message={modal.message} 
-          onClose={() => setModal({ ...modal, show: false })} 
+        <BudgetModal
+          type={modal.type}
+          message={modal.message}
+          onClose={() => setModal({ ...modal, show: false })}
         />
       )}
     </div>
