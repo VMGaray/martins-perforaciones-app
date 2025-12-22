@@ -1,9 +1,17 @@
 "use client";
 
+import { useState, useEffect } from "react"; // Agregamos useState y useEffect
 import Link from "next/link";
 import { Drill, Zap, Shield, Droplets, Gauge, Box, ArrowLeft } from "lucide-react";
 
 export default function DTHDetailView() {
+  // Estado para evitar errores de hidratación en móviles
+  const [hasMounted, setHasMounted] = useState(false);
+
+  useEffect(() => {
+    setHasMounted(true);
+  }, []);
+
   const ventajas = [
     {
       icon: <Zap className="text-blue-500" />,
@@ -21,6 +29,11 @@ export default function DTHDetailView() {
       desc: "Tubos y adaptadores diseñados para manejar impactos severos y garantizar un rendimiento óptimo."
     }
   ];
+
+  // Si no se ha montado, mostramos un fondo sólido para evitar el error de pantalla blanca
+  if (!hasMounted) {
+    return <div className="min-h-screen bg-slate-950" />;
+  }
 
   return (
     <main className="min-h-screen bg-slate-950 text-slate-200 font-sans pb-20">
