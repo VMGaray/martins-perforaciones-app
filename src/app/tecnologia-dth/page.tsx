@@ -1,9 +1,14 @@
+import dynamic from "next/dynamic";
 import { Metadata } from "next";
-import DTHDetailView from "@/components/sections/DTHDetailView";
+
+// Importación dinámica: quita la carga del servidor y elimina el error de renderizado en cascada
+const DTHDetailView = dynamic(() => import("@/components/sections/DTHDetailView"), { 
+  ssr: false,
+  loading: () => <div className="min-h-screen bg-slate-950" /> 
+});
 
 export const metadata: Metadata = {
-  title: "Perforación DTH | Tecnología | Martins Perforaciones",
-  description: "Conocé a fondo nuestra maquinaria Down-The-Hole, diseñada para perforar rocas duras con máxima eficiencia en toda la provincia de Córdoba.",
+  title: "Tecnología DTH | Martins Perforaciones",
 };
 
 export default function DTHPage() {
