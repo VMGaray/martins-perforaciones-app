@@ -1,3 +1,6 @@
+"use client";
+
+import { useState } from "react";
 import { ScanSearch, UserCheck, Sparkles, Binary } from "lucide-react";
 
 export default function Methods() {
@@ -28,7 +31,6 @@ export default function Methods() {
             bgIcon={<Binary size={120} />}
             colorClass="from-cyan-500 to-blue-600"
             iconContainerClass="bg-cyan-900/50 border-cyan-700 text-cyan-400"
-            // --- USA TU FOTO LOCAL ---
             image="/geologo.jpg" 
             description="Realizado por un Geólogo Matriculado. Utiliza instrumentos para medir la resistividad del suelo, identificar capas geológicas y predecir la calidad del agua antes de iniciar la obra."
             features={["Mayor precisión en profundidad", "Informe técnico detallado", "Ideal para terrenos complejos"]}
@@ -42,7 +44,6 @@ export default function Methods() {
             bgIcon={<Sparkles size={120} />}
             colorClass="from-emerald-500 to-green-700"
             iconContainerClass="bg-emerald-900/50 border-emerald-700 text-emerald-400"
-            // --- USA TU FOTO LOCAL ---
             image="/rabdomante.jpg"
             description="Basado en la sensibilidad humana para detectar variaciones en el campo electromagnético natural. Se utilizan varillas o péndulos para marcar el cruce de vetas de agua subterránea."
             features={["Método rápido y económico", "Tradición cultural efectiva", "Detecta cruces de vetas"]}
@@ -73,9 +74,18 @@ function MethodCard({
     description, 
     features 
 }: any) {
+  const [isFlipped, setIsFlipped] = useState(false);
+
   return (
-    <div className="group h-[500px] w-full [perspective:1500px]">
-      <div className="relative h-full w-full transition-all duration-700 [transform-style:preserve-3d] group-hover:[transform:rotateY(180deg)]">
+    <div 
+      className="h-[500px] w-full [perspective:1500px] cursor-pointer"
+      // Desktop: Gira al entrar y salir el mouse
+      onMouseEnter={() => setIsFlipped(true)}
+      onMouseLeave={() => setIsFlipped(false)}
+      // Mobile: Gira al hacer clic/tap
+      onClick={() => setIsFlipped(!isFlipped)}
+    >
+      <div className={`relative h-full w-full transition-all duration-700 [transform-style:preserve-3d] ${isFlipped ? '[transform:rotateY(180deg)]' : ''}`}>
         
         {/* --- LADO A: TEXTO --- */}
         <div className={`absolute inset-0 h-full w-full rounded-3xl p-1 bg-gradient-to-br ${colorClass} [backface-visibility:hidden] shadow-2xl`}>
@@ -106,8 +116,10 @@ function MethodCard({
                     ))}
                 </ul>
 
-                <div className="mt-6 text-center text-xs font-bold text-slate-500 uppercase tracking-widest group-hover:opacity-0 transition-opacity">
-                    Pasa el mouse para ver imagen →
+                {/* Texto indicativo dinámico según dispositivo */}
+                <div className="mt-6 text-center text-[10px] font-bold text-slate-500 uppercase tracking-[0.2em]">
+                    <span className="hidden md:inline">Pasa el mouse para ver imagen</span>
+                    <span className="md:hidden">Toca para ver imagen</span>
                 </div>
             </div>
         </div>
@@ -120,7 +132,8 @@ function MethodCard({
                 <h3 className="text-2xl font-bold text-white mb-2">{title}</h3>
                 <p className="text-slate-300 text-sm italic">Imagen ilustrativa del método.</p>
                 <div className="mt-4 flex items-center gap-2 text-xs font-bold text-blue-400 uppercase tracking-widest">
-                    ← Volver a la explicación
+                    ← <span className="hidden md:inline">Quita el mouse</span>
+                    <span className="md:hidden">Toca para volver</span>
                 </div>
             </div>
         </div>

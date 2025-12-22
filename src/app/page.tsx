@@ -7,6 +7,7 @@ import Footer from "@/components/Footer";
 import Gallery from "@/components/Gallery";
 import Methods from "@/components/Methods";
 
+
 export default function Home() {
   return (
     <div className="min-h-screen bg-blue-950 text-slate-200 selection:bg-blue-500/30">
