@@ -41,7 +41,7 @@ export default function Navbar() {
           <nav className="hidden md:flex items-center gap-8 text-sm font-medium text-slate-400">
             <Link href="/#servicios" className="hover:text-blue-400">Servicios</Link>
             <Link href="/tecnologia-dth" className="hover:text-white">Tecnología DTH</Link>
-            <Link href="/#nosotros" className="hover:text-blue-400">Nosotros</Link>
+            <Link href="/aboutUs" className="hover:text-blue-400">Nosotros</Link>
             <Link href="/login" className="flex items-center gap-2 border-l border-slate-700 pl-6 hover:text-white">
               <LogIn size={16} /> Acceso
             </Link>

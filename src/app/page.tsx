@@ -6,6 +6,7 @@ import CTA from "@/components/CTA";
 import Footer from "@/components/Footer";
 import Gallery from "@/components/Gallery";
 import Methods from "@/components/Methods";
+//import AboutSection from "@/components/AboutSection";
 
 
 export default function Home() {
@@ -18,6 +19,7 @@ export default function Home() {
       <Methods />
       <Gallery />
       <CTA />
+      
       <Footer />
     </div>
   );

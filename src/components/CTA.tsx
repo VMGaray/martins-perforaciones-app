@@ -5,10 +5,10 @@ export default function CTA() {
         <div className="absolute top-0 right-0 -mr-20 -mt-20 w-64 h-64 bg-blue-600/30 blur-[80px] rounded-full pointer-events-none"></div>
         
         <h2 className="relative z-10 text-3xl md:text-4xl font-bold text-white mb-6">
-          ¿Listo para asegurar su abastecimiento de agua?
+          ¿Necesita realizar una perforación de agua?
         </h2>
         <p className="relative z-10 text-blue-100 mb-8 max-w-2xl mx-auto">
-          No deje su producción o su hogar en manos de la suerte. Confíe en Martins Perforaciones.
+          Asesoramiento personalizado y presupuestos según su proyecto y ubicación.
         </p>
         <div className="relative z-10">
           {/* BOTÓN WHATSAPP FINAL */}

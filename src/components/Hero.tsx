@@ -40,7 +40,7 @@ export default function Hero() {
         
         {/* Fondo semitransparente suave detrás del texto para mejorar lectura sin tapar la foto */}
         <p className="mx-auto max-w-2xl text-lg text-blue-50 mb-10 leading-relaxed font-medium drop-shadow-md bg-blue 950/30 p-4 rounded-2xl backdrop-blur-sm">
-          Especialistas en perforaciones profundas, mantenimiento de pozos y sistemas de bombeo. Tecnología de vanguardia para garantizar el recurso vital en su casa, campo o industria.
+          "Especialistas en perforaciones y sistemas de bombeo con 10 años de trayectoria. Empresa habilitada por DIPAS (Matrícula n°94), garantizando asesoramiento profesional y ejecución técnica bajo normas vigentes para sus proyectos hídricos"
         </p>
         
         <div className="flex flex-col md:flex-row items-center justify-center gap-4">
