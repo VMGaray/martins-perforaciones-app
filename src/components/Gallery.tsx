@@ -5,9 +5,9 @@ export default function Gallery() {
     <section className="py-20 px-4 bg-slate-950 border-t border-slate-900">
       <div className="mx-auto max-w-6xl">
         <div className="text-center mb-12">
-          <h2 className="text-3xl font-bold text-white mb-4">Nuestros Resultados</h2>
+          <h2 className="text-3xl font-bold text-white mb-4">Nuestros trabajos</h2>
           <p className="text-slate-400">
-            No solo perforamos, garantizamos el agua. Vea nuestros pozos en acción.
+             Vea nuestros pozos en acción.
           </p>
         </div>
 
