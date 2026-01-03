@@ -6,7 +6,7 @@ export default function Stats() {
           <StatItem number="+10" label="Años de experiencia" />
           <StatItem number="+100" label="Pozos perforados" />
           <StatItem number="100%" label="Garantía de confianza" />
-          <StatItem number="24/7" label="Soporte técnico" />
+          <StatItem number="n°94" label="Habilitación DIPAS" />
         </div>
       </div>
     </section>

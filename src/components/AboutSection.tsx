@@ -62,7 +62,7 @@ const AboutSection = () => {
                 <CheckBadgeIcon className="w-8 h-8 text-blue-400 flex-shrink-0" />
                 <div>
                   <h4 className="text-white font-semibold mb-1">Habilitación Oficial</h4>
-                  <p className="text-sm text-slate-400">Operamos bajo la <span className="text-blue-300 font-medium">Habilitación DIPAS n°94</span>, garantía de legalidad y norma.</p>
+                  <p className="text-sm text-slate-400">Operamos bajo la <span className="text-blue-300 font-medium">Habilitación APRHI n°94</span>, garantía de legalidad y norma.</p>
                 </div>
               </div>
 

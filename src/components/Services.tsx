@@ -18,18 +18,18 @@ export default function Services() {
           <ServiceCard 
             icon={<Hammer className="text-blue-400" size={32} />}
             title="Perforación de Pozos"
-            desc="Maquinaria rotativa capaz de alcanzar grandes profundidades en cualquier tipo de suelo rocoso o sedimentario."
+            desc="Sistema de perforación rotativa por rotopercusión neumática con martillo de fondo - DTH (Down the Hole)-."
             image="/29-5..jpg"
           />
           <ServiceCard 
             icon={<Droplets className="text-cyan-400" size={32} />}
             title="Sistemas de Bombeo"
-            desc="Venta e instalación de bombas sumergibles, solares y centrífugas de las mejores marcas del mercado."
+            desc="Asesoramiento en la elección de su sistema de bombeo e instalación y ejecucion de obra."
             image="/maquina2 dic25.jpeg"
           />
           <ServiceCard 
             icon={<ShieldCheck className="text-emerald-400" size={32} />}
-            title="Mantenimiento y Aforos"
+            title="Aforos y Pruebas de bombeo"
             desc="Limpieza química y mecánica de pozos existentes. Pruebas de bombeo para certificar caudal."
             image="/2dic 25.jpeg"
           />
