@@ -2,33 +2,23 @@
 
 import { useState, useEffect } from "react";
 import { MessageSquare } from "lucide-react";
-import { supabase } from "@/lib/supabase";
+
 
 export default function WhatsAppButton() {
-  const [isLogged, setIsLogged] = useState(true); // por defecto asumimos NO logueado
+  const [isLogged, setIsLogged] = useState(true); // Asumimos logueado hasta verificar
 
   useEffect(() => {
-    const checkUser = async () => {
-      const { data: { session } } = await supabase.auth.getSession();
-      setIsLogged(!!session);
-    };
-    checkUser();
-
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
-      setIsLogged(!!session);
-    });
-
-    return () => subscription.unsubscribe();
+    // Verificamos si existe userRole en localStorage
+    const userRole = localStorage.getItem("userRole");
+    setIsLogged(!!userRole); // true si hay userRole, false si no
   }, []);
 
   // Si está logueado, no mostramos el botón
   if (isLogged) return null;
 
-
   const phoneNumber = "5493546435015"; 
   const message = encodeURIComponent("Hola! Vi la web de Martins Perforaciones y me gustaría realizar una consulta.");
   const whatsappUrl = `https://wa.me/${phoneNumber}?text=${message}`;
-
   return (
     <a
       href={whatsappUrl}
