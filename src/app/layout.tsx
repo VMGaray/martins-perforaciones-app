@@ -8,6 +8,9 @@ const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "Martins Perforaciones | Soluciones Hídricas",
+  manifest: "/manifest.json",
+  themeColor: "#2563eb",
+  viewport: "width=device-width, initial-scale=1, maximum-scale=1",
   description: "Expertos en perforación de agua y sistemas de bombeo en Córdoba.",
 };
 
