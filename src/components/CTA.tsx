@@ -3,29 +3,29 @@
 import React from "react";
 
 export default function CTA() {
-  // Lógica para que el celular abra el menú de "Compartir"
+  // Lógica unificada para el botón
   const handleSolicitarPresupuesto = async () => {
-    const message = "Hola, quiero hacer una consulta por una perforación de agua.";
+    const textMessage = "Hola, quiero hacer una consulta por una perforación de agua.";
     const phoneNumber = "5493546435015";
-    
-    const handleShare = async () => {
-  const shareData = {
-    title: 'Martins Perforaciones',
-    text: 'Hola, quiero hacer una consulta por una perforación de agua.',
-    // Quitamos la URL o el número hardcodeado del texto para que el OS
-    // no sepa "a quién" va dirigido y tenga que preguntar qué app usar.
-  };
 
-  if (navigator.share) {
-    try {
-      // Este comando fuerza la apertura del selector de apps de Android/iOS
-      await navigator.share(shareData);
-    } catch (err) {
-      // Si falla, el fallback sigue siendo el link directo
-      window.open(`https://wa.me/5493546435015?text=${encodeURIComponent(shareData.text)}`, '_blank');
+    const shareData = {
+      title: 'Martins Perforaciones',
+      text: textMessage,
+    };
+
+    // Verificamos si el navegador soporta compartir (celulares modernos)
+    if (navigator && navigator.share) {
+      try {
+        await navigator.share(shareData);
+      } catch (err) {
+        // Si el usuario cancela o falla, abrimos WhatsApp normalmente
+        window.open(`https://wa.me/${phoneNumber}?text=${encodeURIComponent(textMessage)}`, '_blank');
+      }
+    } else {
+      // Fallback para PC o navegadores viejos
+      window.open(`https://wa.me/${phoneNumber}?text=${encodeURIComponent(textMessage)}`, '_blank');
     }
-  }
-};
+  };
 
   return (
     <section className="py-20 px-4">
@@ -40,7 +40,6 @@ export default function CTA() {
         </p>
         
         <div className="relative z-10">
-          {/* BOTÓN CON LÓGICA DE COMPARTIR NATIVA */}
           <button 
             onClick={handleSolicitarPresupuesto}
             className="inline-flex h-14 px-8 items-center justify-center rounded-full bg-white text-blue-900 font-bold hover:bg-blue-50 transition-all shadow-xl shadow-blue-900/50 text-lg"
