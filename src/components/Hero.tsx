@@ -3,35 +3,16 @@
 import { Phone } from "lucide-react";
 
 export default function Hero() {
-  // Lógica "limpia" para forzar el selector de aplicaciones
-  const handleContact = async () => {
-    const message = "Hola, quiero hacer una consulta por una perforación de agua.";
-    const phoneNumber = "5493546435015";
-    
-    // Eliminamos 'url' del objeto para que sea un mensaje de texto genérico
-    // Esto ayuda a que el sistema operativo no "prediga" la app y pregunte
-    const shareData = {
-      title: 'Martins Perforaciones',
-      text: message,
-    };
-
-    if (navigator.share) {
-      try {
-        await navigator.share(shareData);
-      } catch (err) {
-        // Fallback: Si cancela o el navegador falla
-        window.open(`https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`, '_blank');
-      }
-    } else {
-      // Fallback para PC o navegadores que no soportan Share API
-      window.open(`https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`, '_blank');
-    }
+  const handleContact = () => {
+    const phone = "5493546435015";
+    const msg = encodeURIComponent("Hola, quiero hacer una consulta por una perforación de agua");
+    window.open(`https://api.whatsapp.com/send?phone=${phone}&text=${msg}`, '_blank');
   };
 
   return (
     <section className="relative pt-32 pb-20 md:pt-48 md:pb-32 px-4 overflow-hidden min-h-screen flex flex-col justify-center">
       
-      {/* --- FONDO CON IMAGEN --- */}
+      {/* FONDO CON IMAGEN */}
       <div className="absolute inset-0 z-0">
         <img 
           src="/portada dic 25.jpeg" 
@@ -62,7 +43,6 @@ export default function Hero() {
         </p>
         
         <div className="flex flex-col md:flex-row items-center justify-center gap-4">
-          {/* BOTÓN CON LA NUEVA LÓGICA */}
           <button 
             onClick={handleContact}
             className="h-12 px-8 rounded-full bg-blue-600 text-white font-semibold hover:bg-blue-500 transition-all shadow-lg shadow-blue-600/40 w-full md:w-auto flex items-center justify-center gap-2 border border-blue-400/50 backdrop-blur-sm"
