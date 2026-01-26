@@ -17,27 +17,24 @@ export default function WhatsAppButton() {
     const phoneNumber = "5493546435015"; 
     const messageText = "Hola! Vi la web de Martins Perforaciones y me gustaría realizar una consulta.";
     
-    // Datos para el menú de compartir
-    const shareData = {
-      title: 'Martins Perforaciones',
-      text: messageText,
-      url: window.location.href // Opcional: incluye la URL actual
-    };
-
-    // 2. Verificamos si el navegador soporta Web Share API (celulares modernos)
-    if (navigator.share) {
-      try {
-        await navigator.share(shareData);
-      } catch (err) {
-        // Si el usuario cancela, no hacemos nada o usamos el backup
-        console.log("Compartir cancelado o fallido");
-      }
-    } else {
-      // 3. Backup: Si está en PC o navegador viejo, abre el WhatsApp tradicional
-      const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(messageText)}`;
-      window.open(whatsappUrl, '_blank');
-    }
+    const handleShare = async () => {
+  const shareData = {
+    title: 'Martins Perforaciones',
+    text: 'Hola, quiero hacer una consulta por una perforación de agua.',
+    // Quitamos la URL o el número hardcodeado del texto para que el OS
+    // no sepa "a quién" va dirigido y tenga que preguntar qué app usar.
   };
+
+  if (navigator.share) {
+    try {
+      // Este comando fuerza la apertura del selector de apps de Android/iOS
+      await navigator.share(shareData);
+    } catch (err) {
+      // Si falla, el fallback sigue siendo el link directo
+      window.open(`https://wa.me/5493546435015?text=${encodeURIComponent(shareData.text)}`, '_blank');
+    }
+  }
+};
 
   // Si está logueado, no mostramos el botón
   if (isLogged) return null;
