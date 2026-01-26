@@ -19,9 +19,11 @@ export default function Navbar() {
     return () => window.removeEventListener("scroll", updateScroll);
   }, []);
 
+  // Función para derivar al WhatsApp 3546435015
   const handleCotizar = () => {
     const phone = "5493546435015";
     const msg = encodeURIComponent("Hola! Me gustaría cotizar una perforación.");
+    // Usamos api.whatsapp.com para permitir elegir cuenta en Android
     window.open(`https://api.whatsapp.com/send?phone=${phone}&text=${msg}`, '_blank');
   };
 
@@ -35,6 +37,7 @@ export default function Navbar() {
 
   return (
     <header className="fixed top-0 left-0 right-0 z-[60] px-4 py-4">
+      {/* Barra de progreso de scroll */}
       <div 
         className="fixed top-0 left-0 h-1 bg-blue-500 transition-all duration-150 z-[70]" 
         style={{ width: `${completion}%` }}
@@ -43,6 +46,7 @@ export default function Navbar() {
       <div className="mx-auto max-w-7xl">
         <div className="flex items-center justify-between rounded-full border border-blue-800 bg-blue-950/80 px-6 py-3 backdrop-blur-md shadow-2xl">
           
+          {/* LOGO */}
           <Link href="/" className="flex items-center gap-2 flex-shrink-0">
             <div className="flex size-8 items-center justify-center rounded-lg bg-blue-600 text-white">
               <Droplets size={20} strokeWidth={3} />
@@ -50,6 +54,7 @@ export default function Navbar() {
             <span className="text-lg font-bold text-white hidden sm:inline">Martins Perforaciones</span>
           </Link>
 
+          {/* NAV ESCRITORIO */}
           <nav className="hidden lg:flex items-center gap-6 text-sm font-medium text-slate-400">
             {navLinks.map((link) => (
               <Link 
@@ -61,11 +66,13 @@ export default function Navbar() {
               </Link>
             ))}
             
+            {/* BOTÓN DE ACCESO (ESCRITORIO) - RESTAURADO */}
             <Link href="/login" className="flex items-center gap-2 border-l border-slate-700 pl-6 hover:text-white transition-colors">
               <LogIn size={16} /> Acceso
             </Link>
           </nav>
 
+          {/* ACCIONES / BOTÓN MÓVIL */}
           <div className="flex items-center gap-2">
             <button 
               onClick={handleCotizar} 
@@ -99,7 +106,18 @@ export default function Navbar() {
                 <ArrowRight size={14} className="text-slate-500" />
               </Link>
             ))}
+            
             <div className="h-px bg-blue-800 my-2" />
+            
+            {/* BOTÓN DE ACCESO (MÓVIL) - RESTAURADO */}
+            <Link 
+              href="/login" 
+              onClick={() => setIsMenuOpen(false)} 
+              className="flex items-center justify-center gap-2 p-4 rounded-2xl text-blue-400 font-bold"
+            >
+              <LogIn size={18} /> Acceso Personal
+            </Link>
+            
             <button 
               onClick={handleCotizar}
               className="flex items-center justify-center gap-2 bg-blue-600 p-4 rounded-2xl text-white font-bold shadow-lg"
