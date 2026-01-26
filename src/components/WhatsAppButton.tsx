@@ -12,36 +12,36 @@ export default function WhatsAppButton() {
     setIsLogged(!!userRole); // true si hay userRole, false si no
   }, []);
 
-  // 1. Definimos la función de compartir nativa
+  // Función de compartir única y corregida
   const handleShare = async () => {
-    const phoneNumber = "5493546435015"; 
+    const phoneNumber = "5493546435015";
     const messageText = "Hola! Vi la web de Martins Perforaciones y me gustaría realizar una consulta.";
-    
-    const handleShare = async () => {
-  const shareData = {
-    title: 'Martins Perforaciones',
-    text: 'Hola, quiero hacer una consulta por una perforación de agua.',
-    // Quitamos la URL o el número hardcodeado del texto para que el OS
-    // no sepa "a quién" va dirigido y tenga que preguntar qué app usar.
+
+    const shareData = {
+      title: 'Martins Perforaciones',
+      text: messageText,
+    };
+
+    // Intentamos usar la Share API nativa
+    if (navigator && navigator.share) {
+      try {
+        await navigator.share(shareData);
+      } catch (err) {
+        // Fallback si el usuario cancela o hay un error técnico
+        window.open(`https://wa.me/${phoneNumber}?text=${encodeURIComponent(messageText)}`, '_blank');
+      }
+    } else {
+      // Fallback para computadoras o navegadores que no soportan share
+      window.open(`https://wa.me/${phoneNumber}?text=${encodeURIComponent(messageText)}`, '_blank');
+    }
   };
 
-  if (navigator.share) {
-    try {
-      // Este comando fuerza la apertura del selector de apps de Android/iOS
-      await navigator.share(shareData);
-    } catch (err) {
-      // Si falla, el fallback sigue siendo el link directo
-      window.open(`https://wa.me/5493546435015?text=${encodeURIComponent(shareData.text)}`, '_blank');
-    }
-  }
-};
-
-  // Si está logueado, no mostramos el botón
+  // Si está logueado, ocultamos el botón
   if (isLogged) return null;
 
   return (
     <button
-      onClick={handleShare} // Cambiamos href por onClick
+      onClick={handleShare}
       className="fixed bottom-24 right-4 md:bottom-8 md:right-8 z-[70] flex items-center gap-3 px-6 py-3 bg-slate-950 border border-blue-500/30 text-white rounded-full shadow-2xl hover:bg-blue-600 hover:border-blue-500 transition-all duration-300 group shadow-blue-900/20"
       aria-label="Contactar por WhatsApp"
     >
@@ -49,7 +49,7 @@ export default function WhatsAppButton() {
       <span className="text-xs font-bold uppercase tracking-[0.1em]">
         Consultar Ahora
       </span>
-      {/* Efecto decorativo de pulso */}
+      {/* Efecto de pulso animado */}
       <span className="absolute inset-0 rounded-full bg-blue-500/10 opacity-0 group-hover:opacity-100 animate-pulse pointer-events-none"></span>
     </button>
   );
