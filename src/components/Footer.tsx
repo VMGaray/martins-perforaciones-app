@@ -64,21 +64,33 @@ export default function Footer() {
           </div>
         </div>
 
-        {/* Línea final de créditos */}
+ {/* Línea final de créditos */}
 <div className="pt-8 border-t border-slate-900 flex flex-col md:flex-row justify-between items-center gap-4 text-[10px] text-slate-600 uppercase font-bold tracking-widest">
-  <p>© {new Date().getFullYear()} Martins Perforaciones. Todos los derechos reservados.</p>
-  <p>
-    Desarrollado por{" "}
-    <a 
-      href="https://mi-portfolio-victoria-garay.vercel.app/" // 👈 Poné acá la URL de tu portfolio
-      target="_blank" 
-      rel="noopener noreferrer"
-      className="text-blue-400 hover:text-blue-300 transition-colors duration-300"
-    >
-      Victoria Garay
-    </a>
-  </p>
+   
+  <div className="flex items-center gap-2">
+    <span className="text-blue-400">
+      {/* Logo en lugar del ícono */}
+      <img 
+        src="/logo.jpg"   // 👈 guardá tu logo en la carpeta /public
+        alt="VMG Setup AI" 
+        className="h-6 w-auto"
+      />
+    </span>
+    <p>
+      Desarrollado por{" "}
+      <a 
+        href="https://mi-portfolio-victoria-garay.vercel.app/" 
+        target="_blank" 
+        rel="noopener noreferrer"
+        className="text-blue-400 hover:text-blue-300 transition-colors duration-300"
+      >
+        VMG Setup AI
+      </a>
+    </p>
+      </div>
+      <p>© {new Date().getFullYear()} Martins Perforaciones. Todos los derechos reservados.</p>
 </div>
+
       </div>
     </footer>
   );
