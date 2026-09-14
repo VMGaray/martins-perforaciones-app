@@ -103,17 +103,17 @@ export default function AdminView() {
 
   return (
     <div className="min-h-screen bg-slate-950 text-slate-200 pb-20 font-sans">
-      <header className="border-b border-slate-800 bg-slate-900/50 px-6 py-4 flex justify-between items-center sticky top-0 z-20 backdrop-blur-md">
+      <header className="border-b border-slate-800 bg-slate-900/50 px-4 sm:px-6 py-4 flex flex-wrap gap-3 justify-between items-center sticky top-0 z-20 backdrop-blur-md">
         <div>
-          <h1 className="text-xl font-bold text-white tracking-tight">Panel de Control</h1>
+          <h1 className="text-lg sm:text-xl font-bold text-white tracking-tight">Panel de Control</h1>
           <p className="text-[10px] text-blue-400 font-bold uppercase tracking-widest">Administración Central</p>
         </div>
-        <div className="flex items-center gap-4">
-          <Link 
-            href="/ventas" 
-            className="bg-blue-600 text-white px-4 py-2 rounded-xl text-xs font-bold hover:bg-blue-500 transition-all flex items-center gap-2"
+        <div className="flex items-center gap-2 sm:gap-4">
+          <Link
+            href="/ventas"
+            className="bg-blue-600 text-white px-3 sm:px-4 py-2 rounded-xl text-xs font-bold hover:bg-blue-500 transition-all flex items-center gap-2"
           >
-            <Plus size={16}/> Nuevo Presupuesto
+            <Plus size={16}/> <span className="hidden sm:inline">Nuevo Presupuesto</span><span className="sm:hidden">Nuevo</span>
           </Link>
           <button onClick={handleLogout} className="p-2 text-slate-500 hover:text-red-400 transition-colors">
             <LogOut size={20} />
@@ -121,8 +121,8 @@ export default function AdminView() {
         </div>
       </header>
 
-      <main className="max-w-7xl mx-auto p-6 space-y-8">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <main className="max-w-7xl mx-auto p-4 sm:p-6 space-y-8">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6">
           <StatCard icon={<FileText />} label="Presupuestos" value={presupuestos.length} color="blue" />
           <StatCard icon={<DollarSign />} label="Facturación" value={`$${(totalFacturado / 1000000).toFixed(1)}M`} color="emerald" />
           <StatCard icon={<Users />} label="Equipo" value={usuarios.length} color="cyan" />

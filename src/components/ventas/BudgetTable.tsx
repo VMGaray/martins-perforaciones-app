@@ -6,7 +6,50 @@ export default function BudgetTable({ items, onUpdateItem, total }: any) {
       <div className="p-4 border-b border-slate-800 bg-slate-900">
         <h2 className="flex items-center gap-2 text-emerald-400 font-semibold"><Calculator size={18} /> Detalle de Costos</h2>
       </div>
-      <div className="overflow-x-auto">
+
+      {/* --- VISTA MOBILE: tarjetas apiladas, más fácil de tocar y leer --- */}
+      <div className="md:hidden divide-y divide-slate-800">
+        {items.map((item: any) => (
+          <div key={item.id} className="p-4 space-y-3">
+            <p className="text-sm text-slate-200 leading-snug">
+              {item.desc}
+              {item.isOptional && <span className="ml-2 text-[9px] text-blue-400 font-bold uppercase bg-blue-900/20 px-1.5 py-0.5 rounded align-middle">Opcional</span>}
+            </p>
+            <div className="grid grid-cols-2 gap-3">
+              <label className="space-y-1">
+                <span className="block text-[10px] text-slate-500 uppercase font-bold tracking-widest">Cantidad</span>
+                <input
+                  type="number"
+                  inputMode="decimal"
+                  value={item.qty}
+                  onChange={e => onUpdateItem(item.id, 'qty', e.target.value)}
+                  className="w-full bg-slate-950/50 border border-slate-700 rounded-lg p-2.5 text-center text-white text-base"
+                />
+              </label>
+              <label className="space-y-1">
+                <span className="block text-[10px] text-slate-500 uppercase font-bold tracking-widest">Unitario</span>
+                <input
+                  type="number"
+                  inputMode="decimal"
+                  value={item.price}
+                  onChange={e => onUpdateItem(item.id, 'price', e.target.value)}
+                  className="w-full bg-slate-950/50 border border-slate-700 rounded-lg p-2.5 text-right text-white text-base"
+                />
+              </label>
+            </div>
+            <p className="text-right font-bold text-slate-200">
+              Total: <span className="text-emerald-400">${item.total.toLocaleString('es-AR')}</span>
+            </p>
+          </div>
+        ))}
+        <div className="p-4 flex justify-between items-center bg-slate-950">
+          <span className="text-slate-500 text-xs font-bold uppercase tracking-widest">Total Estimado</span>
+          <span className="text-2xl font-bold text-emerald-400">${total.toLocaleString('es-AR')}</span>
+        </div>
+      </div>
+
+      {/* --- VISTA ESCRITORIO: tabla completa --- */}
+      <div className="hidden md:block overflow-x-auto">
         <table className="w-full text-sm text-left">
           <thead className="text-xs text-slate-500 uppercase bg-slate-950/50">
             <tr>

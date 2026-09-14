@@ -34,21 +34,65 @@ export default function BudgetHistoryTable({ presupuestos, loading, role }: Budg
         <div className="p-12 text-center text-slate-500 animate-pulse font-medium">
           Cargando registros...
         </div>
+      ) : presupuestos.length === 0 ? (
+        <p className="p-12 text-center text-slate-600 italic">
+          No se encontraron presupuestos en el historial.
+        </p>
       ) : (
-        <div className="overflow-x-auto">
-          <table className="w-full text-sm text-left">
-            <thead className="bg-slate-950/50 text-slate-500 uppercase text-[10px] font-bold">
-              <tr>
-                <th className="px-6 py-4">Fecha</th>
-                <th className="px-6 py-4">Cliente</th>
-                {role === 'admin' && <th className="px-6 py-4">Vendedor</th>}
-                <th className="px-6 py-4">Estado</th>
-                <th className="px-6 py-4 text-center">Acción</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-slate-800">
-              {presupuestos.length > 0 ? (
-                presupuestos.map((p) => (
+        <>
+          {/* --- VISTA MOBILE: tarjetas --- */}
+          <div className="md:hidden divide-y divide-slate-800">
+            {presupuestos.map((p) => (
+              <div key={p.id} className="p-4 space-y-2">
+                <div className="flex justify-between items-start gap-2">
+                  <div>
+                    <span className="font-bold text-white block">{p.cliente_nombre}</span>
+                    <span className="text-[10px] text-slate-500">{p.localidad}</span>
+                  </div>
+                  <button
+                    onClick={() => router.push(`/ventas?id=${p.id}`)}
+                    className="px-3 py-2 bg-slate-800 hover:bg-blue-600 text-slate-300 hover:text-white rounded-xl text-xs font-bold transition-all shadow-sm flex-shrink-0"
+                  >
+                    {role === 'admin' ? 'Editar/Ver' : (p.estado === 'Guardado' ? 'Completar' : 'Ver')}
+                  </button>
+                </div>
+                <div className="flex flex-wrap items-center gap-2 text-xs">
+                  <span className="text-slate-500 font-mono">{new Date(p.created_at).toLocaleDateString('es-AR')}</span>
+                  {role === 'admin' && (
+                    <>
+                      <span className="text-slate-700">•</span>
+                      <span className="text-[10px] bg-blue-900/20 text-blue-400 px-2 py-1 rounded-md font-bold">
+                        {p.creado_por || "Sin asignar"}
+                      </span>
+                    </>
+                  )}
+                </div>
+                <span className={`px-2 py-1 rounded-lg text-[9px] font-bold uppercase inline-flex items-center gap-1 w-fit ${
+                  p.estado === 'Enviado WhatsApp'
+                  ? 'bg-green-900/30 text-green-400 border border-green-800/50'
+                  : 'bg-blue-900/30 text-blue-400 border border-blue-800/50'
+                }`}>
+                  {p.estado === 'Enviado WhatsApp' ? <MessageSquare size={10} /> : <FileText size={10} />}
+                  {p.estado}
+                </span>
+              </div>
+            ))}
+          </div>
+
+          {/* --- VISTA ESCRITORIO: tabla --- */}
+          <div className="hidden md:block overflow-x-auto">
+            <table className="w-full text-sm text-left">
+              <thead className="bg-slate-950/50 text-slate-500 uppercase text-[10px] font-bold">
+                <tr>
+                  <th className="px-6 py-4">Fecha</th>
+                  <th className="px-6 py-4">Cliente</th>
+                  {role === 'admin' && <th className="px-6 py-4">Vendedor</th>}
+                  <th className="px-6 py-4">Estado</th>
+                  <th className="px-6 py-4 text-center">Acción</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-slate-800">
+                {presupuestos.map((p) => (
                   <tr key={p.id} className="hover:bg-slate-800/20 transition-colors">
                     <td className="px-6 py-4 text-xs text-slate-500 font-mono">
                       {new Date(p.created_at).toLocaleDateString('es-AR')}
@@ -68,8 +112,8 @@ export default function BudgetHistoryTable({ presupuestos, loading, role }: Budg
                     )}
                     <td className="px-6 py-4">
                       <span className={`px-2 py-1 rounded-lg text-[9px] font-bold uppercase flex items-center gap-1 w-fit ${
-                        p.estado === 'Enviado WhatsApp' 
-                        ? 'bg-green-900/30 text-green-400 border border-green-800/50' 
+                        p.estado === 'Enviado WhatsApp'
+                        ? 'bg-green-900/30 text-green-400 border border-green-800/50'
                         : 'bg-blue-900/30 text-blue-400 border border-blue-800/50'
                       }`}>
                         {p.estado === 'Enviado WhatsApp' ? <MessageSquare size={10} /> : <FileText size={10} />}
@@ -77,7 +121,7 @@ export default function BudgetHistoryTable({ presupuestos, loading, role }: Budg
                       </span>
                     </td>
                     <td className="px-6 py-4 text-center">
-                      <button 
+                      <button
                         onClick={() => router.push(`/ventas?id=${p.id}`)}
                         className="px-4 py-2 bg-slate-800 hover:bg-blue-600 text-slate-300 hover:text-white rounded-xl text-xs font-bold transition-all shadow-sm"
                       >
@@ -85,17 +129,11 @@ export default function BudgetHistoryTable({ presupuestos, loading, role }: Budg
                       </button>
                     </td>
                   </tr>
-                ))
-              ) : (
-                <tr>
-                  <td colSpan={role === 'admin' ? 5 : 4} className="p-12 text-center text-slate-600 italic">
-                    No se encontraron presupuestos en el historial.
-                  </td>
-                </tr>
-              )}
-            </tbody>
-          </table>
-        </div>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </>
       )}
     </div>
   );
