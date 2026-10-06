@@ -61,43 +61,52 @@ export const generateBudgetPDF = (client: any, items: any[], work: any) => {
   });
 
   let currentY = (doc as any).lastAutoTable.finalY + 15;
+  const pageHeight = doc.internal.pageSize.getHeight();
+  const bottomLimit = pageHeight - 20; // deja lugar para el pie de página
+
+  // Salta de página si el próximo bloque no entra
+  const ensureSpace = (height: number) => {
+    if (currentY + height > bottomLimit) {
+      doc.addPage();
+      currentY = 20;
+    }
+  };
+
+  const renderSection = (title: string, lines: string[]) => {
+    ensureSpace(14);
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(11);
+    doc.setTextColor(41, 128, 185);
+    doc.text(title, margin, currentY);
+    doc.setFont("helvetica", "normal");
+    doc.setFontSize(9);
+    doc.setTextColor(50);
+
+    lines.forEach(line => {
+      const split = doc.splitTextToSize(`• ${line}`, pageWidth - (margin * 2));
+      ensureSpace(6 + (split.length - 1) * 4);
+      currentY += 6;
+      doc.text(split, margin, currentY);
+      // Ajuste dinámico de Y si el texto ocupa más de una línea
+      currentY += (split.length - 1) * 4;
+    });
+  };
 
   // --- SECCIÓN: OBSERVACIONES ---
-  doc.setFont("helvetica", "bold");
-  doc.setFontSize(11);
-  doc.setTextColor(41, 128, 185);
-  doc.text("Observaciones:", margin, currentY);
-  doc.setFont("helvetica", "normal");
-  doc.setFontSize(9);
-  doc.setTextColor(50);
-  
-  BUDGET_OBSERVATIONS.forEach(obs => {
-    currentY += 6;
-    const splitObs = doc.splitTextToSize(`• ${obs}`, pageWidth - (margin * 2));
-    doc.text(splitObs, margin, currentY);
-    // Ajuste dinámico de Y si el texto ocupa más de una línea
-    currentY += (splitObs.length - 1) * 4;
-  });
+  renderSection("Observaciones:", BUDGET_OBSERVATIONS);
 
   // --- SECCIÓN: CONDICIONES COMERCIALES ---
   currentY += 12;
-  doc.setFont("helvetica", "bold");
-  doc.setFontSize(11);
-  doc.setTextColor(41, 128, 185);
-  doc.text("Condiciones Comerciales:", margin, currentY);
-  doc.setFont("helvetica", "normal");
-  doc.setFontSize(9);
-  doc.setTextColor(50);
-
-  COMMERCIAL_TERMS.forEach(term => {
-    currentY += 6;
-    doc.text(`• ${term}`, margin, currentY);
-  });
+  renderSection("Condiciones Comerciales:", COMMERCIAL_TERMS);
 
   // --- PIE DE PÁGINA ---
-  doc.setFontSize(8);
-  doc.setTextColor(150);
-  doc.text("Presupuesto sujeto a cambios según condiciones del terreno.", pageWidth / 2, 285, { align: "center" });
+  const totalPages = doc.getNumberOfPages();
+  for (let page = 1; page <= totalPages; page++) {
+    doc.setPage(page);
+    doc.setFontSize(8);
+    doc.setTextColor(150);
+    doc.text("Presupuesto sujeto a cambios según condiciones del terreno.", pageWidth / 2, pageHeight - 12, { align: "center" });
+  }
 
   doc.save(`Presupuesto_${client.name.replace(/\s+/g, '_')}.pdf`);
 };

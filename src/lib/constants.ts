@@ -1,14 +1,18 @@
 export const BUDGET_OBSERVATIONS = [
   "La instalación de cañería en PVC para encamisado hasta la boca del pozo, sin cargo.",
-  "Para obtener una buena columna de agua, y mayor seguridad, se recomienda superar al menos 10 mts de profundidad indicada por el geólogo.",
-  "Se recomienda que el empalme de cables de la bomba sea realizado por el fabricante."
+  "El test de caudal y test de capacidad de recuperación de pozo están incluidos.",
+  "Para obtener una buena columna de agua, y mayor seguridad para el óptimo funcionamiento de la bomba, se recomienda superar al menos 10 mts de profundidad indicada por el geólogo o rabdomante contratado por el cliente.",
+  "Se le recomienda al cliente que el empalme de los cables de alimentación eléctrica de la bomba sea realizado por el fabricante."
 ];
 
 export const COMMERCIAL_TERMS = [
   "SEÑA: $100.000.- para la reserva de turno (a descontarse del trabajo final).",
   "FORMA DE PAGO: 30% adelantado - Saldo contra terminación de pozo.",
-  "MINIMO DE METROS: 25 mts.",
-  "VALIDEZ DEL PRESUPUESTO: 15 días"
+  "MÍNIMO DE METROS DE PERFORACIÓN: 25 mts.",
+  "Una vez realizada la cantidad de metros presupuestados, si el cliente quiere continuar debe estar saldado el importe inicial.",
+  "En caso que el cliente contemple superar los 60 mts de profundidad debe informarlo antes de iniciar el trabajo.",
+  "La tarea de Martins Perforaciones es la realización de la perforación donde el cliente lo indique, referido tanto a la ubicación como a la cantidad de metros, quedando obligado el cliente al pago de los metros perforados por Martins Perforaciones.",
+  "VALIDEZ DEL PRESUPUESTO: 72 horas."
 ];
 
 export const INITIAL_ITEMS = [
