@@ -6,7 +6,7 @@ export const BUDGET_OBSERVATIONS = [
 
 export const COMMERCIAL_TERMS = [
   "SEÑA: $100.000.- para la reserva de turno (a descontarse del trabajo final).",
-  "FORMA DE PAGO: 30% adelantado - Saldo contra terminación de pozo.",
+  "FORMA DE PAGO: 30% adelantado - Saldo al cumplirse la cantidad de metros presupuestados.",
   "MÍNIMO DE METROS DE PERFORACIÓN: 25 mts.",
   "Una vez realizada la cantidad de metros presupuestados, si el cliente quiere continuar debe estar saldado el importe inicial.",
   "Los metros adicionales, a lo presupuestado, se cobran conforme avance de metros diarios.",
