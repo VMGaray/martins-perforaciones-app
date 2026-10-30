@@ -4,7 +4,6 @@ import { useEffect, useRef, useState } from "react";
 
 const STATS = [
   { prefix: "+", value: 10, label: "Años de experiencia" },
-  { prefix: "+", value: 100, label: "Pozos perforados" },
   { text: "100%", label: "Garantía de confianza" },
   { text: "n°94", label: "Habilitación APRHI" },
 ];
@@ -12,12 +11,12 @@ const STATS = [
 export default function Stats() {
   return (
     <section aria-label="Martins en números" className="border-y border-veta bg-roca">
-      <div className="mx-auto max-w-7xl grid grid-cols-2 lg:grid-cols-4">
+      <div className="mx-auto max-w-7xl grid grid-cols-2 lg:grid-cols-3">
         {STATS.map((s, i) => (
           <div
             key={s.label}
-            className={`px-5 md:px-8 py-8 md:py-10 border-veta ${i % 2 === 0 ? "border-r" : ""} ${
-              i < 2 ? "border-b lg:border-b-0" : ""
+            className={`px-5 md:px-8 py-8 md:py-10 border-veta ${i === 0 ? "border-r" : ""} ${
+              i < 2 ? "border-b lg:border-b-0" : "col-span-2 lg:col-span-1"
             } ${i === 1 ? "lg:border-r" : ""}`}
           >
             <div className="font-condensed text-5xl md:text-6xl text-white">
