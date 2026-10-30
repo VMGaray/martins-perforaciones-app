@@ -29,14 +29,13 @@ export default function WhatsAppButton() {
   return (
     <button
       onClick={handleWhatsApp}
-      className="fixed bottom-24 right-4 md:bottom-8 md:right-8 z-[70] flex items-center gap-3 px-6 py-3 bg-slate-950 border border-blue-500/30 text-white rounded-full shadow-2xl hover:bg-blue-600 transition-all duration-300 group shadow-blue-900/20"
+      className="fixed bottom-24 right-4 md:bottom-8 md:right-8 z-[70] flex items-center gap-3 px-5 py-3 bg-pozo border border-maquina/60 text-white rounded-md shadow-2xl shadow-black/40 hover:bg-maquina hover:text-pozo transition-colors duration-300 group"
       aria-label="Contactar por WhatsApp"
     >
-      <MessageSquare size={20} className="text-blue-400 group-hover:text-white transition-colors" />
-      <span className="text-xs font-bold uppercase tracking-[0.1em]">
-        Consultar Ahora
+      <MessageSquare size={20} className="text-maquina group-hover:text-pozo transition-colors" />
+      <span className="text-sm font-bold">
+        Consultar ahora
       </span>
-      <span className="absolute inset-0 rounded-full bg-blue-500/10 opacity-0 group-hover:opacity-100 animate-pulse pointer-events-none"></span>
     </button>
   );
 }

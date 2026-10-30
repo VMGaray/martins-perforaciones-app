@@ -1,52 +1,109 @@
-import { Play } from "lucide-react";
+"use client";
+
+import { useRef } from "react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
+
+type Item =
+  | { type: "video"; src: string; poster: string; title: string; caption: string; live?: boolean }
+  | { type: "photo"; src: string; alt: string };
+
+const ITEMS: Item[] = [
+  {
+    type: "video",
+    src: "/perfo dic 25.mp4",
+    poster: "/dic 25.jpeg",
+    title: "Prueba de bombeo",
+    caption: "Verificación de caudal constante",
+    live: true,
+  },
+  { type: "photo", src: "/assets/foto1.jpg", alt: "Perforadora instalada en el terreno" },
+  { type: "photo", src: "/maquina1 dic25 .jpeg", alt: "Equipo de perforación junto a un quincho" },
+  {
+    type: "video",
+    src: "/perfo 25 dic.mp4",
+    poster: "/maquina4 dic25.jpeg",
+    title: "Proceso de perforación",
+    caption: "Maquinaria de alta precisión en roca",
+  },
+  { type: "photo", src: "/assets/foto7.jpg", alt: "Perforadora a contraluz al atardecer" },
+  { type: "photo", src: "/nosotros-equipo.jpg", alt: "Operario trabajando en la perforadora" },
+  { type: "photo", src: "/assets/foto5.jpg", alt: "Perforación en marcha con polvo de roca" },
+  { type: "photo", src: "/assets/foto2.jpg", alt: "Detalle del martillo y la salida de material" },
+];
 
 export default function Gallery() {
+  const stripRef = useRef<HTMLDivElement>(null);
+  const scrollBy = (dir: 1 | -1) => {
+    const el = stripRef.current;
+    if (el) el.scrollBy({ left: dir * el.clientWidth * 0.8, behavior: "smooth" });
+  };
+
   return (
-    <section className="py-20 px-4 bg-slate-950 border-t border-slate-900">
-      <div className="mx-auto max-w-6xl">
-        <div className="text-center mb-12">
-          <h2 className="text-3xl font-bold text-white mb-4">Nuestros trabajos</h2>
-          <p className="text-slate-400">
-             Vea nuestros pozos en acción.
-          </p>
+    <section id="trabajos" className="scroll-mt-24 py-24 md:py-32">
+      <div className="mx-auto max-w-7xl px-5 md:px-8 flex items-end justify-between gap-6 mb-12">
+        <div>
+          <h2 className="font-condensed uppercase text-white text-5xl md:text-7xl mb-4">Nuestros trabajos</h2>
+          <p className="text-lg text-bruma">Vea nuestros pozos en acción.</p>
         </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          
-          {/* Video 1 - Caudal fuerte */}
-          <div className="group relative rounded-3xl overflow-hidden border border-slate-800 bg-slate-900 aspect-video shadow-2xl">
-            <div className="absolute top-4 left-4 z-10 bg-black/50 backdrop-blur px-3 py-1 rounded-full text-xs font-bold text-white border border-white/10 flex items-center gap-2">
-                <div className="size-2 rounded-full bg-red-500 animate-pulse"></div>
-                EN OBRA
-            </div>
-            <video 
-                src="/perfo dic 25.mp4" 
-                autoPlay loop muted playsInline 
-                className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity duration-500"
-            />
-            <div className="absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-black/80 to-transparent">
-                <h3 className="text-white font-bold text-lg">Prueba de Bombeo</h3>
-                <p className="text-slate-300 text-sm">Verificación de caudal constante</p>
-            </div>
-          </div>
-
-          {/* Video 2 - Perforación */}
-          <div className="group relative rounded-3xl overflow-hidden border border-slate-800 bg-slate-900 aspect-video shadow-2xl">
-             <div className="absolute top-4 left-4 z-10 bg-blue-600/80 backdrop-blur px-3 py-1 rounded-full text-xs font-bold text-white border border-white/10">
-                PERFORACIÓN
-            </div>
-            <video 
-                src="/perfo 25 dic.mp4" 
-                autoPlay loop muted playsInline 
-                className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity duration-500"
-            />
-             <div className="absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-black/80 to-transparent">
-                <h3 className="text-white font-bold text-lg">Proceso de Perforación</h3>
-                <p className="text-slate-300 text-sm">Maquinaria de alta precisión en roca</p>
-            </div>
-          </div>
-
+        <div className="hidden md:flex gap-2">
+          <button
+            onClick={() => scrollBy(-1)}
+            aria-label="Ver anteriores"
+            className="size-12 rounded-md border border-veta text-white hover:border-maquina hover:text-maquina transition-colors flex items-center justify-center"
+          >
+            <ChevronLeft />
+          </button>
+          <button
+            onClick={() => scrollBy(1)}
+            aria-label="Ver siguientes"
+            className="size-12 rounded-md border border-veta text-white hover:border-maquina hover:text-maquina transition-colors flex items-center justify-center"
+          >
+            <ChevronRight />
+          </button>
         </div>
+      </div>
+
+      <div
+        ref={stripRef}
+        className="strip flex gap-4 overflow-x-auto snap-x snap-mandatory scroll-smooth pb-4 scroll-px-5 md:scroll-px-8"
+        style={{ paddingInline: "max(1.25rem, calc((100vw - 80rem) / 2 + 2rem))" }}
+      >
+        {ITEMS.map((item) =>
+          item.type === "video" ? (
+            <figure
+              key={item.src}
+              className="relative shrink-0 snap-start h-[440px] md:h-[520px] aspect-[9/16] overflow-hidden rounded-lg bg-roca"
+            >
+              <video
+                src={item.src}
+                poster={item.poster}
+                autoPlay
+                loop
+                muted
+                playsInline
+                className="h-full w-full object-cover"
+              />
+              {item.live && (
+                <span className="absolute top-3 left-3 flex items-center gap-2 rounded bg-pozo/70 backdrop-blur px-2.5 py-1 text-xs font-semibold text-white">
+                  <span className="size-2 rounded-full bg-red-500 animate-pulse" />
+                  En obra
+                </span>
+              )}
+              <figcaption className="absolute inset-x-0 bottom-0 p-5 bg-gradient-to-t from-black/85 to-transparent">
+                <span className="block font-condensed uppercase text-2xl text-white">{item.title}</span>
+                <span className="text-sm text-niebla/80">{item.caption}</span>
+              </figcaption>
+            </figure>
+          ) : (
+            <img
+              key={item.src}
+              src={item.src}
+              alt={item.alt}
+              loading="lazy"
+              className="shrink-0 snap-start h-[440px] md:h-[520px] w-auto max-w-[85vw] object-cover rounded-lg bg-roca"
+            />
+          )
+        )}
       </div>
     </section>
   );

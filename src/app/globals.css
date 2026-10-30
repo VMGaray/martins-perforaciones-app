@@ -1,30 +1,76 @@
 @import "tailwindcss";
+@import "@fontsource-variable/archivo/wdth.css";
 
 @theme {
-  /* Tus colores de marca (los dejamos por si los usás después) */
+  /* Paleta Martins — azul de pozo profundo + amarillo de máquina */
+  --color-pozo: #07131f;      /* fondo principal */
+  --color-roca: #10202e;      /* superficies */
+  --color-veta: #1d3446;      /* bordes / divisores */
+  --color-agua: #5bb8ec;      /* acento agua */
+  --color-maquina: #f3c32b;   /* acento amarillo de la perforadora */
+  --color-niebla: #e7eef3;    /* texto principal */
+  --color-bruma: #8fa5b6;     /* texto secundario */
+
+  /* compatibilidad con el resto de las páginas */
   --color-primary: #137fec;
   --color-primary-dark: #0f65bc;
-  
   --color-background-light: #f6f7f8;
   --color-background-dark: #101922;
 
-  /* Tu fuente */
-  --font-display: var(--font-public-sans), sans-serif;
+  --font-sans: "Archivo Variable", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Archivo Variable", ui-sans-serif, system-ui, sans-serif;
+
+  --animate-kenburns: kenburns 24s ease-out both;
+  --animate-rise: rise 0.9s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+
+  @keyframes kenburns {
+    from { transform: scale(1.12); }
+    to { transform: scale(1); }
+  }
+  @keyframes rise {
+    from { opacity: 0; transform: translateY(28px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
 }
 
-/* Reseteo básico para que ocupe toda la altura */
-html, body {
-  height: 100%;
+/* Titulares: Archivo condensado y pesado, como rotulado industrial */
+.font-condensed {
+  font-stretch: 72%;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  line-height: 0.92;
+}
+.font-wide {
+  font-stretch: 118%;
 }
 
-/* src/app/globals.css */
+/* overflow-x: clip (en vez de hidden + height:100%) mantiene el scroll en la ventana,
+   así funcionan la barra de progreso, el perfil de pozo y los anchors */
 html, body {
   max-width: 100vw;
-  overflow-x: hidden;
+  overflow-x: clip;
 }
 
 /* Evita que el contenido desaparezca si hay un error de scroll en móviles */
 main {
   display: block !important;
   opacity: 1 !important;
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-maquina);
+  outline-offset: 3px;
+}
+
+/* Barra de scroll horizontal discreta para la galería */
+.strip::-webkit-scrollbar { height: 6px; }
+.strip::-webkit-scrollbar-thumb { background: var(--color-veta); border-radius: 9999px; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }
